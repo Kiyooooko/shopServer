@@ -2,22 +2,19 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+const promisifyResponse = require('../middlewares/promisifyResponse');
+const { getProducts } = require('../controllers/product.controller');
 const Products = require('../models/product.model');
+const { returnString } = require('../helpers/helper');
 
 const productRouter = express.Router();
 
 productRouter.use(bodyParser.json());
 
 productRouter.route('/')
-    .get((req, res, next) => {
-        Products.find({})
-            .then((products) => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(products);
-            }, (err) => next(err))
-            .catch((err) => next(err));
-    })
+    .get(
+        promisifyResponse(getProducts)
+    )
     .post((req, res, next) => {
         Products.create(req.body)
             .then((product) => {
@@ -28,12 +25,11 @@ productRouter.route('/')
             }, (err) => next(err))
             .catch((err) => next(err));
     })
-    .put((req, res, next) => {
-        res.statusCode = 403;
-        res.end('PUT operation not supported on /products');
-    })
+    .put(
+        promisifyResponse(returnString('PUT operation not supported on /products'), 403)
+    )
     .delete((req, res, next) => {
-        Products.remove({})
+        Products.remove()
             .then((resp) => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
@@ -54,7 +50,7 @@ productRouter.route('/:productId')
     })
     .post((req, res, next) => {
         res.statusCode = 403;
-        res.end(`PUT operation not supported on /products/ ${req.params.productId}`);
+        res.end(`POST operation not supported on /products/ ${req.params.productId}`);
     })
     .put((req, res, next) => {
         Products.findByIdAndUpdate(req.params.productId, {
