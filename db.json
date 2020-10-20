@@ -1,0 +1,21 @@
+{
+    "products": [{
+            "name": "Cake",
+            "price": "149.99",
+            "category": "Food",
+            "quantity": 5
+        },
+        {
+            "name": "Frying pan",
+            "price": "3699.99",
+            "category": "Cooking equipment ",
+            "quantity": 3
+        },
+        {
+            "name": "Rose",
+            "price": "15.99",
+            "category": "Flowers",
+            "quantity": 50
+        }
+    ]
+}
