@@ -1,3 +1,3 @@
 module.exports = {
-    returnString: value => () => value
+    returnString: (value) => () => value
 }
