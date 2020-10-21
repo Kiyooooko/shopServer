@@ -5,9 +5,11 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const Products = require('./models/product.model');
 
-const url = 'mongodb://localhost:27017/shopServer';
+const url = process.env.URL;
 const connect = mongoose.connect(url, { useNewUrlParser: true });
 
 var indexRouter = require('./routes/index');
